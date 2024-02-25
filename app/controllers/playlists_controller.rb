@@ -9,8 +9,13 @@ class PlaylistsController < ApplicationController
   end
 
   def create
-    playlist = Playlist.create(playlist_params)
-    render json: playlist
+    playlist = Playlist.new(playlist_params)
+    playlist.device_id = params[:device_id]
+    if playlist.save
+      render json: playlist, status: :created
+    else
+      render json: playlist.errors, status: :unprocessable_entity
+    end
   end
 
   def update_one
@@ -32,7 +37,7 @@ class PlaylistsController < ApplicationController
   private 
     
   def playlist_params
-    params.require(:playlist).permit(:title, :description)
+    params.require(:playlist).permit(:device_id, :title, :description)
   end
     
 end

@@ -29,9 +29,24 @@ class MediaController < ApplicationController
     end
   end
 
+  def add_to_playlist
+    playlist = Playlist.find(params[:playlist_id])
+    media = Medium.find(params[:media_id])
+    playlist.media << media
+
+    render json: { message: "Success"}
+  end
+
+  def get_all_playlist_media
+    playlist = Playlist.find(params[:playlist_id])
+    media = playlist.media
+
+    render json: media
+  end
+
   private 
     
   def medium_params
-    params.require(:medium).permit(:title, :description, :link)
+    params.require(:medium).permit(:playlist_id, :media_id, :title, :description, :link)
   end
 end

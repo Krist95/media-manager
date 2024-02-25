@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_02_24_193657) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_25_004539) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -29,11 +29,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_24_193657) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "media_playlists", id: false, force: :cascade do |t|
+    t.bigint "playlist_id", null: false
+    t.bigint "medium_id", null: false
+  end
+
   create_table "playlists", force: :cascade do |t|
     t.string "title"
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "device_id", null: false
+    t.index ["device_id"], name: "index_playlists_on_device_id"
   end
 
+  add_foreign_key "playlists", "devices"
 end
